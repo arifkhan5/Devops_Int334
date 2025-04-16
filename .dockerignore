@@ -1,6 +1,9 @@
 node_modules
-dist
-.git
+npm-debug.log
+build
+.dockerignore
 Dockerfile
-docker-compose.yml
-.env
+.git
+.github
+.gitignore
+README.md
