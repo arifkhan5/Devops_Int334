@@ -1,9 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: react-app
-  labels:
-    app: react-app
+  name: react-app-deployment  # Change this line to match the actual deployment name
 spec:
   replicas: 1
   selector:
