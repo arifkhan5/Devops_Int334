@@ -28,5 +28,5 @@ jobs:
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
-          kubectl set image deployment/int334-app int334-app=${{ secrets.DOCKER_USERNAME }}/int334-app:latest --namespace=default
+          kubectl set image deployment/int334-app react-app=${{ secrets.DOCKER_USERNAME }}/react-app:latest --namespace=default
           kubectl rollout status deployment/int334-app --namespace=default
