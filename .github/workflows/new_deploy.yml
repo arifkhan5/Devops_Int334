@@ -6,7 +6,8 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build-and-push:
+    name: Build and Push Docker Image
     runs-on: ubuntu-latest
 
     steps:
@@ -29,6 +30,15 @@ jobs:
         push: true
         tags: arif0/react-app:latest
 
+  deploy:
+    name: Deploy to Kubernetes
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v3
+
     - name: Install kubectl
       run: |
         curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -37,11 +47,12 @@ jobs:
 
     - name: Set up Kubeconfig
       run: |
-        echo "${{ secrets.KUBECONFIG_DATA }}" > kubeconfig
+        echo "${{ secrets.KUBECONFIG_DATA }}" | base64 -d > kubeconfig
         export KUBECONFIG=$PWD/kubeconfig
         kubectl get nodes
 
-    - name: Deploy to Kubernetes
+    - name: Deploy Kubernetes manifests
       run: |
         export KUBECONFIG=$PWD/kubeconfig
         kubectl apply -f k8s/deployment.yaml
+        
