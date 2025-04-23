@@ -16,10 +16,10 @@ jobs:
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/int334-app:latest .
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/react-app:latest .
 
     - name: Push Docker image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/int334-app:latest
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/react-app:latest
 
     - name: Deploy to Kubernetes on EC2
       uses: appleboy/ssh-action@master
@@ -29,4 +29,4 @@ jobs:
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
           kubectl set image deployment/int334-app react-app=${{ secrets.DOCKER_USERNAME }}/react-app:latest --namespace=default
-          kubectl rollout status deployment/int334-app --namespace=default
+          kubectl rollout status deployment/react-app --namespace=default
